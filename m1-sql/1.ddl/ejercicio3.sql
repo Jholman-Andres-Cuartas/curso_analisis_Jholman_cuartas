@@ -8,6 +8,7 @@ USE sakila;
 SELECT * FROM sakila.film;
 SELECT * from sakila.customer;
 select * from sakila.film_reviews;
+
 CREATE TABLE film_reviews (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     film_id smallint unsigned NOT NULL,
