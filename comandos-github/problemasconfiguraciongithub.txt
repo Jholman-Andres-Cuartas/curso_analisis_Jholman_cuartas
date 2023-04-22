@@ -1,0 +1,65 @@
+1. Crear la carpeta (repositorio local) en el PC.
+2. Inicializar repositorio para que sea creado el archivo .git: >git init
+3. Atribuir el nombre de usuario/correo (deben ser identicos al usuario/correo creado en remoto GitHub)
+4. Vincular el repositorio local con el repositorio remoto: >git remote add origin https://github.com/ea-analisisdatos/testegithub.git
+
+-> PARA SUBIR ARCHIVOS AO GITHUB (REMOTO): Usa el comando push
+>git push -u origin main (o master)
+
+-> PARA BAJAR lOS ARCHIVOS AL PC (LOCAL): usa el pull
+>git pull origin main (o master)
+
+-> PARA CLONAR EL REPOSITORIO REMOTO (GITHUB)
+>git clone (nombredelrepositorio.git)
+>git clone https://github.com/ea-analisisdatos/testegithub.git
+
+-> WINDOWS 10: CUANDO NO SE ENCUENTRA EL REPOSITORIO REMOTO, NO SE PUEDE AUTENTICAR ETC
+Busca la aplicación: "Credenciales de Windows", luego busca la linea:
+git:https://github.com: clica en la seta abajo. Podrás remover esa linea ou alterar los datos contidos ahí.
+Se eliminas la linea, al tentar vincular los repositorios, se te pedirá que informe el usuario y contraseña de autenticancion del GITHUB
+Se editas, debe informar el mismo nombre de usuario de github y su contraseña.
+
+Si tienes mas de una cuenta/repositorio en GITHUB, puedes alterar el archivo .git en el repositorio local del pc:
+[core]
+  repositoryformatversion = 0
+  filemode = false
+  bare = false
+  logallrefupdates = true
+  symlinks = false
+  ignorecase = true
+[user]
+  name = ea-analisisdatos
+  email = erikaalvares.analisisdatos@gmail.com
+[remote "origin"]
+  url = https://github.com/ea-analisisdatos/analisis_datos_erika_alvares.git
+  fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+  remote = origin
+  merge = refs/heads/main
+[credential "microsoft.visualstudio.com"]
+    authority = AAD
+    interactive = always
+    preserve = true
+    tokenDuration = 24
+    validate = false
+[credential "visualstudio.com"]
+    authority = MSA
+[credential]
+  helper = ea-analisisdatos
+    writelog = true
+  interactive = always
+  username = ea-analisisdatos
+
+  Fuentes de información:
+  https://github.com/Microsoft/Git-Credential-Manager-for-Windows/blob/master/Docs/Configuration.md
+
+
+  Script generado en GitHub luego despues que se crea un nuevo repositorio. Estos comandos deben
+  ser ejecutados en la terminal de tu pc, por ejemplo, en Git Bash
+  echo "# testegithub" >> README.md
+    git init
+    git add README.md
+    git commit -m "first commit"
+    git branch -M main
+    git remote add origin https://github.com/ea-analisisdatos/testegithub.git
+    git push -u origin main
