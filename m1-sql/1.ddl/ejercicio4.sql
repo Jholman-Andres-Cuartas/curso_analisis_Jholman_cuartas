@@ -1,3 +1,4 @@
+
 -- Tabla películas favoritas
 -- Crear una tabla para almacenar información de películas favoritas de los clientes.
 -- La tabla debe llamarse customer_favorites.
