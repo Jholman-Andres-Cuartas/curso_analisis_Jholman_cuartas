@@ -19,3 +19,4 @@ VALUES ('Jholman', '910309J', 'analisisjholman@outlook.es', '2023-01-01');
 INSERT INTO `curso_analisis`.`employee` (`first_name`, `nif`, `email`, `birthday`) VALUES ('Prueba', '343434Y', 'PRUEBA2@PRUEBA.COM', '2021-01-01');
 
 SELECT * FROM sakila.film;
+
