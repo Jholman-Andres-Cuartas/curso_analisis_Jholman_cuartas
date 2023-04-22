@@ -1,4 +1,3 @@
-
 -- Crear una tabla employee
 
 SELECT * FROM curso_analisis.employee;
