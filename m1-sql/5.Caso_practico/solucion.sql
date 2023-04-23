@@ -3,187 +3,156 @@
 DROP schema IF exists `m1_caso_practico`;
 CREATE SCHEMA `m1_caso_practico`;
 USE `m1_caso_practico`;
-
 -- Opción 1: clientes, productos, pedidos, detalles_pedidos
 -- Opción 2: autores, libros, clientes, prestamos
-
-CREATE TABLE autores (
-	id_autor INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50),
-    apellidos VARCHAR(100),
-    fecha_nacimiento DATE
+CREATE TABLE `clientes` (
+  `id_cliente` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) DEFAULT NULL,
+  `apellidos` varchar(100) DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `email` varchar(20) DEFAULT NULL,
+  `telefono` int DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 );
-
-CREATE TABLE libros (
-	id_libro INT PRIMARY KEY AUTO_INCREMENT,
-    titulo VARCHAR(250),
-    editorial VARCHAR (100),
-    category VARCHAR (50),
-    num_paginas INT,
-    precio DECIMAL(12, 2), 
-    id_autor INT, -- crear columna
-    FOREIGN KEY (id_autor) REFERENCES autores(id_autor) -- añadir fk a columna id_autor de libros
+CREATE TABLE `productos` (
+  `id_producto` int NOT NULL AUTO_INCREMENT,
+  `articulo` varchar(250) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  `category` varchar(50) DEFAULT NULL,
+  `precio` decimal(12,2) DEFAULT NULL,
+  `id_cliente` int DEFAULT NULL,
+  PRIMARY KEY (`id_producto`),
+  KEY `id_cliente` (`id_cliente`),
+  CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci -- añadir fk a columna id_cliente de productos
 );
 -- https://dev.mysql.com/doc/refman/8.0/en/integer-types.html
-CREATE TABLE usuarios (
-	id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE pedidos (
+	id_pedido INT PRIMARY KEY AUTO_INCREMENT,
     nif VARCHAR(9),
     email VARCHAR(50) UNIQUE,
-    fecha_alta DATE,
+    fecha DATE,
     codigo_postal VARCHAR(5),
-    UNIQUE KEY `usuarios_nif_unique` (`nif`)
+    UNIQUE KEY `pedidos_nif_unique` (`nif`)
 );
-
-CREATE TABLE prestamos (
-	id_prestamo INT PRIMARY KEY AUTO_INCREMENT, 
-    id_libro INT,
-    id_usuario INT,
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    recargo DECIMAL(12, 2) DEFAULT 0.0,
-    FOREIGN KEY (id_libro) REFERENCES libros(id_libro),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+CREATE TABLE `detalles_pedido` (
+  `id_detalles_pedido` int NOT NULL AUTO_INCREMENT,
+  `id_producto` int DEFAULT NULL,
+  `id_pedido` int DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  PRIMARY KEY (`id_detalles_pedido`),
+  KEY `id_producto` (`id_producto`),
+  KEY `id_pedido` (`id_pedido`),
+  CONSTRAINT `detalles_pedido_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`),
+  CONSTRAINT `detalles_pedido_ibfk_2` FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 );
 /*
-CREATE TABLE prestamos (
-    id_libro INT,
-    id_usuario INT,
-    fecha_inicio DATE,
+CREATE TABLE detalles_pedido (
+    id_producto INT,
+    id_pedido INT,
+    fecha DATE,
     fecha_fin DATE,
     recargo DECIMAL(12, 2) DEFAULT 0.0,
-    PRIMARY KEY(id_libro, id_usuario, fecha_inicio), -- explorar clave primaria compuesta usando fecha inicio para que un usuario no pueda reservar un mismo libro dos veces  en el mismo día
-    FOREIGN KEY (id_libro) REFERENCES libros(id_libro),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+    PRIMARY KEY(id_producto, id_pedido, fecha), -- explorar clave primaria compuesta usando fecha inicio para que un pedido no pueda reservar un mismo producto dos veces  en el mismo día
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido)
 );
 */
-select * from autores;
-select * from libros;
-select * from usuarios;
-select * from prestamos;
+select * from clientes;
+select * from productos;
+select * from pedidos;
+select * from detalles_pedido;
 
 
--- Many To One desde Book hacia Author
--- One To Many desde Author hacia Book
-
--- INSERTAR 
-INSERT INTO autores (nombre, apellidos, fecha_nacimiento) VALUES 
-('author1', 'apellido1', '1980-01-01'),
-('author2', 'apellido2', '1980-01-01'),
-('author3', 'apellido3', '1980-01-01'),
-('author4', 'apellido4', '1983-01-01'),
-('author5', 'apellido5', '1983-01-01'),
-('author6', 'apellido6', '1985-01-01'),
-('author7', 'apellido6', '1985-01-01'),
-('author8', 'apellido6', '1985-01-01')
+INSERT INTO clientes (nombre, apellidos, fecha_nacimiento, email, telefono, direccion) 
+VALUES 
+('andres', 'andrade', '1970-01-01', 'cliente1@tecno.es', '601010101', 'calle de la alegria'),
+('lalo', 'lima', '1980-02-02', 'cliente2@tecno.es', '601010102', 'calle de la euforia'),
+('hernando', 'hernandez', '1990-03-03', 'cliente3@tecno.es', '601010103', 'calle de la esperanza'),
+('fernando', 'fernandez', '2000-04-04', 'cliente4@tecno.es', '601010104', 'calle de la satisfaccion'),
+('armando', 'torres de la luz', '1960-05-05', 'cliente5@tecno.es', '601010105', 'calle del aprendizaje'),
+('martina', 'martinez', '1996-06-09', 'cliente6@tecno.es', '601010106','calle de las oportunidades')
 ;
-
-INSERT INTO libros (titulo, editorial, category, num_paginas, precio, id_autor) VALUES
-('Ejemplo libro antiguo', 'Planeta', 'Novela', 250, 19.99, 1),
-('Ejemplo libro moderno', 'Anaya', 'Tecnico', 500, 39.99, 1),
-('Ensayos varios', 'Planeta', 'Ensayo', 432, 9.99, 2),
-('Poemas', 'Planeta', 'Novela', 250, 19.99, 3),
-('Periodico semanal', 'Planeta', 'Novela', 250, 19.99, 3),
-('Ejemplo libro antiguo', 'Planeta', 'Novela', 250, 19.99, 3)
-;
-
-INSERT INTO usuarios (nif, email, fecha_alta, codigo_postal) VALUES
-('1111111A', 'user1@gmail.com', '2015-01-01', '28003'),
-('2222222B', 'user2@gmail.com', '2016-01-01', '28002'),
-('3333333C', 'user3@gmail.com', '2015-02-01', '44500'),
-('4444444D', 'user4@gmail.com', '2015-03-01', '24001'),
-('5555555E', 'user5@gmail.com', '2015-04-01', '33020')
-;
--- sin recargo
-INSERT INTO prestamos (id_libro, id_usuario, fecha_inicio, fecha_fin) VALUES 
-(1, 2, '2023-04-10', '2023-04-18')
+INSERT INTO productos (articulo, descripcion, category, precio, id_cliente) VALUES
+('consolas de videojuegos', 'play station 5', 'tecnologia', 700.99, 2),
+('celular_telefono_movil', 'iphon 14', 'Tecnologia', 850.99, 4),
+('computadora', 'hp pavilion', 'tecnologia', 800.99, 2),
+('smartwatch', 'reloj sony','tecnologia', 640.99, 6)
+('televisores', 'sony', 'tecnologia', 1005.99, 2),
+('tablets', 'ipad', 'tecnologia',1999.99, 1),
+('televisores', 'panasonic', 'tecnologia', 259.99, 3)
+('consolas de videojuegos', 'xbox serie x', 'tecnologia', 700.99, 3),
+('celular_telefono_movil', 'iphon 13', 'Tecnologia', 850.99, 5),
+('computadora', 'hp pavilion', 'tecnologia', 800.99, 2),
+('smartwatch', 'reloj sony','tecnologia', 640.99, 3)
+('televisores', 'sony', 'tecnologia', 1005.99, 4),
+('tablets', 'ipad', 'tecnologia',1999.99, 6),
+('televisores', 'panasonic', 'tecnologia', 259.99, 6)
 ;
 
 
--- con recargo
-INSERT INTO prestamos (id_libro, id_usuario, fecha_inicio, fecha_fin, recargo) VALUES 
-(1, 2, '2023-04-10', '2023-04-18', 0.0),
-(2, 3, '2023-04-10', '2023-04-18', 2.34),
-(3, 4, '2023-04-11', '2023-04-19', 0.0),
-(2, 5, '2023-04-14', '2023-04-23', 3.0)
+INSERT INTO pedidos (nif, email, fecha, codigo_postal) VALUES
+('000000A', 'cliente1@tecno.es', '2023-01-01', '28003'),
+('111111B', 'cliente2@tecno.es', '2023-01-01', '28002'),
+('222222C', 'cliente3@tecno.es', '2023-02-01', '28025'),
+('333333D', 'cliente4@tecno.es', '2023-02-01', '28024'),
+('444444E', 'cliente5@tecno.es', '2023-03-01', '28024')
+('555555G', 'cliente6@tecno.es', '2023-03-01', '28026')
+('666666H', 'cliente7@tecno.es', '2023-05-01', '28030')
 ;
 
+INSERT INTO `m1_caso_practico`.`detalles_pedido` (`fecha`) VALUES
+('2023-01-17'),
+('2023-01-10'),
+('2023-01-10'),
+('2023-02-10'),
+('2023-02-10'),
+('2023-02-10'),
+('2023-03-10'),
+('2023-01-10'),
+('2023-04-10'),
+('2023-02-10'),
+('2023-04-10'),
+('2023-04-10'),
+('2023-01-10'),
+('2023-03-10'),
+('2023-02-10');
+;
 
 -- CONSULTAS
-select * from autores;
-select * from libros;
-select * from usuarios;
-select * from prestamos;
+select * from clientes;
+select * from productos;
+select * from pedidos;
+select * from detalles_pedido;
 
--- 1. Tabla autores
+-- 1. Tabla clientes
 -- select por nombre like
 -- select count por año de nacimiento
 select 
 EXTRACT(YEAR FROM fecha_nacimiento) as birth_year, 
-count(*) as total_authors
-from autores 
+count(*) as total_clientes
+from clientes
 GROUP BY EXTRACT(YEAR FROM fecha_nacimiento);
 
--- 2. tabla libros
-select * from libros;
--- select por titulo like
--- count por editorial o por category
-select count(*) from libros;
-select editorial, count(*) as count_books from libros GROUP BY editorial;
-select category, count(*) as count_books from libros GROUP BY category;
+-- 2. tabla productos
 
--- sum de precio por editorial
-select editorial, sum(precio) as precio_total from libros GROUP BY editorial;
-select editorial, round(avg(precio), 2) as precio_medio from libros GROUP BY editorial;
+-- select por articulo like
+-- count por descripcion o por category
+select count(*) from productos;
+select descripcion, count(*) as descripcion_precio from  GROUP BY precio;
+select category, count(*) as count_productos from productos GROUP BY category;
 
--- avg de precio por nombre de autor
-select * 
-from libros
-JOIN autores ON libros.id_autor = autores.id_autor;
+-- sum de precio por descripcion
+select descripcion, sum(precio) as precio_total from productos GROUP BY descripcion;
+select descripcion, round(avg(precio), 2) as precio_medio from productos GROUP BY descripcion;
 
-select autores.nombre, sum(precio), avg(precio), sum(num_paginas), avg(num_paginas)
-from libros
-JOIN autores ON libros.id_autor = autores.id_autor GROUP BY autores.nombre;
-
--- max o avg por num_paginas
-
--- qué autor tiene más libros: max count por autor
-select autores.nombre as nombre_autor, count(*) as count_libros
-from libros
-JOIN autores ON libros.id_autor = autores.id_autor GROUP BY autores.nombre;
-
-select nombre_autor, max(count_libros) from 
-(
-select autores.nombre as nombre_autor, count(*) as count_libros
-from libros
-JOIN autores ON libros.id_autor = autores.id_autor GROUP BY autores.nombre
-) 
-as result;
-
-select id_autor, count(*) as count_libros
-from libros GROUP BY id_autor;
--- TODO: probar a traer en dos subconsultas
-
-
--- 3. tabla usuarios
--- count de altas por mes
--- count por código postal
-
--- 4. tabla prestamos
-select * from prestamos;
-
--- count por mes
--- sum recargo
--- max sum recargos group by user
-select sum(recargo) from prestamos;
-select id_usuario, sum(recargo) as recargo_euros  from prestamos GROUP BY id_usuario;
-select id_usuario, sum(recargo) as recargo_euros  from prestamos GROUP BY id_usuario HAVING recargo_euros > 0;
-
-
--- avg (count por usuario) group by year
--- count por autor
--- max count libro
-
-
-
+• Mostrar todos los clientes ordenados alfabéticamente por apellido.
+• Mostrar todos los productos con un stock inferior a 10.
+• Mostrar todos los pedidos realizados por un cliente específico (por id_cliente).
+• Mostrar el total de ventas (precio * cantidad) por cada pedido.
+• Mostrar el pedido con la mayor cantidad de productos diferentes
 
 
