@@ -1,4 +1,3 @@
-
 -- Añadir una columna 'last_update' sobre una tabla 
 -- para almacenar la fecha y hora de la última actualización del registro:
 
