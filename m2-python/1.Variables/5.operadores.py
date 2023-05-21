@@ -11,7 +11,7 @@ edad += 1
 
 edades = [18, 19, 20, 21, 22, 23]
 
-print(18 in edades)  # True o False
+print(18 in edades) # True o False
 
 titulo = 'Ejemplos python 3.10'
 

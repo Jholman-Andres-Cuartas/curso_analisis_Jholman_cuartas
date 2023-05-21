@@ -1,5 +1,3 @@
-
-
 # diccionar con str
 alumnos = {
     "111A": "Juan García",
