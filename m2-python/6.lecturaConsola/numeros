@@ -1,0 +1,22 @@
+
+numeros = [1, 3, 2, 5, 9, 6]
+
+max = numeros[0]
+for x in numeros:
+    if x > max:
+        ...
+        return max.
+
+
+def menor(numero):
+    min = lista[0]
+    for x in lista:
+        if x < min:
+            ...
+
+
+def main(lista):
+    print("La lista es ", lista)
+    print("El número mayor es ",
+          mayor(lista))
+    print("El número menor es ", menor(lista))

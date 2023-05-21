@@ -122,37 +122,26 @@ INSERT INTO `m1_caso_practico`.`detalles_pedido` (`fecha`) VALUES
 ('2023-02-10');
 ;
 
--- CONSULTAS
+
+-- Consultas
+-- Mostrar todos los clientes ordenados alfabéticamente por apellido.
 select * from clientes;
+select * from clientes ORDER BY apellido asc;
+
+-- Mostrar todos los productos con un stock inferior a 200.
 select * from productos;
+select * from productos where stock <200;
+
+-- Mostrar todos los pedidos realizados por un cliente específico (por id_cliente).
 select * from pedidos;
-select * from detalles_pedido;
+select id_cliente, count(*) from pedidos  group by id_cliente;
 
--- 1. Tabla clientes
--- select por nombre like
--- select count por año de nacimiento
-select 
-EXTRACT(YEAR FROM fecha_nacimiento) as birth_year, 
-count(*) as total_clientes
-from clientes
-GROUP BY EXTRACT(YEAR FROM fecha_nacimiento);
-
--- 2. tabla productos
-
--- select por articulo like
--- count por descripcion o por category
-select count(*) from productos;
-select descripcion, count(*) as descripcion_precio from  GROUP BY precio;
-select category, count(*) as count_productos from productos GROUP BY category;
-
--- sum de precio por descripcion
-select descripcion, sum(precio) as precio_total from productos GROUP BY descripcion;
-select descripcion, round(avg(precio), 2) as precio_medio from productos GROUP BY descripcion;
-
-• Mostrar todos los clientes ordenados alfabéticamente por apellido.
-• Mostrar todos los productos con un stock inferior a 10.
-• Mostrar todos los pedidos realizados por un cliente específico (por id_cliente).
-• Mostrar el total de ventas (precio * cantidad) por cada pedido.
-• Mostrar el pedido con la mayor cantidad de productos diferentes
+-- Mostrar el total de ventas (precio * cantidad) por cada pedido.
+select dp.id_pedido, sum((pd.precio * dp.cantidad)) as total_ventas
+from detalles_pedido as dp
+inner join pedidos as p on p.id_pedido = dp.id_pedido
+inner join productos as pd on pd.id_producto = dp.id_producto
+group by dp.id_pedido;
 
 
+-- Mostrar el pedido con la mayor cantidad de productos diferentes.

@@ -15,3 +15,4 @@ date_to = datetime.date.today()
 travel1 = travel1("Madrid", "Praga", date_from, date_to)
 
 print(f"Dia de salida {Travel.date_from}" y dia de regreso {date_to})
+
