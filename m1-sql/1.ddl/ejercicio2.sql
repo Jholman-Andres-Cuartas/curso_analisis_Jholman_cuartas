@@ -74,7 +74,6 @@ COMMIT;
 -- Data for table `db_employees`.`employees`
 -- -----------------------------------------------------
 START TRANSACTION;
-
 USE `db_employees`;
 INSERT INTO `db_employees`.`employees` (`id`, `nif`, `first_name`, `available`, `job_role`, `job_level`, `last_name`, `company_id`) VALUES (DEFAULT, '4321234T', 'Paco', 1, 'Developer', 'Senior', 'García', 1);
 INSERT INTO `db_employees`.`employees` (`id`, `nif`, `first_name`, `available`, `job_role`, `job_level`, `last_name`, `company_id`) VALUES (DEFAULT, '3434354Y', 'Fran', 0, 'Marketer', 'Junior', 'Ambrosio', 1);
