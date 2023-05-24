@@ -1,5 +1,5 @@
 import datetime
-# Por defecto input lee string 
+# Por defecto input lee string
 # nombre = input("Introduzca su nombre\n") # <class 'str'>
 
 # edad = int(input("Introduce edad\n")) # <class 'int'>
@@ -11,7 +11,8 @@ import datetime
 # fecha_nacimiento_str = input("Introduce fecha nacimiento (YYYY-MM-dd) (1990-11-03) \n")
 # fecha_nacimiento = datetime.date.fromisoformat(fecha_nacimiento_str)
 
-fecha_nacimiento_str = input("Introduce fecha nacimiento (dd/MM/YYYY) (03/11/1991) \n")
+fecha_nacimiento_str = input(
+    "Introduce fecha nacimiento (dd/MM/YYYY) (03/11/1991) \n")
 fecha_array = fecha_nacimiento_str.split("/")
 year = int(fecha_array[2])
 month = int(fecha_array[1])

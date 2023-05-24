@@ -1,8 +1,9 @@
+
 from input_reader import read_int, read_float
-from travel import Travel 
+from travel import Travel
 from travel_database import TravelDatabase
 
-database = TravelDatabase() # CRUD sobre una lista en RAM
+database = TravelDatabase()  # CRUD sobre una lista en RAM
 
 
 while True:
@@ -18,37 +19,37 @@ while True:
           8 - Salir de la aplicación \n
           """)
     option = int(input("Introduce una opción\n"))
-    
+
     if option == 1:
-        
+
         for travel in database.find_all():
             print(travel)
-            
+
     elif option == 2:
         id = read_int("id")
         travel = database.find_by_id(id)
         print(travel)
-        
+
     elif option == 3:
         pass
-    elif option == 4: 
-        
+    elif option == 4:
+
         city_from = input("Introduce la ciudad origen")
         city_to = input("Introduce la ciudad origen")
         passengers = read_int("passengers")
         price = read_float("price")
-        
+
         travel = Travel(None, city_from, city_to, passengers, price)
-        
+
         database.save(travel)
-        
+
         print("Viaje creado correctamente")
-        
+
     elif option == 5:
         pass
     elif option == 6:
         pass
-    elif option == 7:   
+    elif option == 7:
         pass
     else:
         print('Hasta la proxima')

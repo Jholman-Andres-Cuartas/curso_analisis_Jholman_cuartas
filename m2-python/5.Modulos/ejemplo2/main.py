@@ -1,4 +1,3 @@
-
 # 1. Sin alias
 # import saludos
 # saludos.saludo1()
